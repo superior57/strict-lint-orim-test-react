@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, Routes as Switch } from 'react-router-dom';
 import Main from '../layouts/Main';
-import Blog from '../pages/blog';
-import Customer from '../pages/customer';
-import Home from '../pages/home';
+const Blog = React.lazy(() => import('../pages/blog'));
+const Customer = React.lazy(() => import('../pages/customer'));
+const Home = React.lazy(() => import('../pages/home'));
 
 export default function Routes() {
   return (
     <Main>
-      <Switch>
-        <Route path={'/home'} element={<Home />} />
-        <Route path={'/blog/:blogId'} element={<Blog />} />
-        <Route path={'/customer/:customerId'} element={<Customer />} />
-      </Switch>
+      <Suspense fallback={<div>{'Loading...'}</div>}>
+        <Switch>
+          <Route path={'/home'} element={<Home />} />
+          <Route path={'/blog/:blogId'} element={<Blog />} />
+          <Route path={'/customer/:customerId'} element={<Customer />} />
+        </Switch>
+      </Suspense>
     </Main>
   );
 }
